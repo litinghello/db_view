@@ -35,6 +35,12 @@ ipcMain.on('upload', (event, arg) => {
 		event.reply('message', err);
 	});
 })
+ipcMain.on('update', (event, arg) => {
+	//console.log(arg);
+	update(arg,function(err){
+		event.reply('message', err);
+	});
+})
 
 function download(config,callback){
 	var EasyFtp = require('easy-ftp');
@@ -68,5 +74,21 @@ function upload(config,callback){
 	});
 	ftp.on('error', function(){
 		callback({type:'upload',msg:"error"});
+	});
+}
+function update(config,callback){
+	var EasyFtp = require('easy-ftp');
+	var ftp = new EasyFtp();
+	ftp.connect(config);
+	ftp.on('open', function(){
+		ftp.ls("/",function(list){
+			callback({type:'update',msg:list});
+		});
+	});
+	ftp.on('close', function(){
+		callback({type:'update',msg:"close"});
+	});
+	ftp.on('error', function(){
+		callback({type:'update',msg:"error"});
 	});
 }
