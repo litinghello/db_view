@@ -12,6 +12,8 @@ app.on('ready',function(){//当 Electron 完成初始化时被触发。
     window.loadFile("./html/index.html");
     //window.openDevTools();//开启调试工具
 	//window.webContents.openDevTools();
+	window.setMenuBarVisibility(false);
+	window.setMenu(null);
     window.on('closed',()=>{
         window = null;
     });
