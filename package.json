@@ -1,0 +1,71 @@
+{
+  "name": "magnetic_therapy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^7.1.1",
+    "electron-builder": "^21.2.0",
+    "electron-rebuild": "^1.8.2"
+  },
+  "build": {
+    "productName": "优品睡眠磁疗仪数据库管理软件",
+    "appId": "com.sleep_ctl.app",
+    "copyright": "@优品睡眠",
+    "asar": true,
+    "extraResources": [
+      {
+        "from": "./sqlite3.db",
+        "to": "../"
+      }
+    ],
+    "directories": {
+      "output": "build"
+    },
+    "electronDownload": {
+      "mirror": "https://npm.taobao.org/mirrors/electron/"
+    },
+    "win": {
+      "icon": "./image/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "ia32",
+            "x64"
+          ]
+        }
+      ]
+    },
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "http://47.95.119.159/"
+      }
+    ],
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "./image/icon.ico",
+      "uninstallerIcon": "./image/icon.ico",
+      "installerHeaderIcon": "./image/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "license": "license.txt",
+      "shortcutName": "优品睡眠磁疗仪数据库管理软件"
+    }
+  },
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "easy-ftp": "^0.4.1",
+    "element-ui": "^2.13.2",
+    "node-machine-id": "^1.1.12",
+    "request": "^2.88.2",
+    "vue": "^2.6.10"
+  }
+}

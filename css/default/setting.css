@@ -1,0 +1,27 @@
+@charset "utf-8";
+
+.main{
+    position: fixed;
+    top: 50px;
+    bottom: 0;
+    left:auto;
+    right:auto;
+}
+.h-100{
+    height: 100%;
+}
+.left-box{
+    border-right: #999999 solid 1px;
+    height: 100%;
+    margin-top: 15px;
+}
+.left-item{
+    text-align: center;
+}
+.left-item.active{
+    color: #00FF00;
+    border-right: #00FF00 solid 2px;
+}
+.dir-setting{
+    margin: 15px 0;
+}

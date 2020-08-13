@@ -1,0 +1,40 @@
+@charset "utf-8";
+
+html,body{
+    min-height: 100%;
+}
+body{
+    background: #fcfcfc;
+}
+.main{
+    height: 100%;
+    background: #EEEEEE;
+}
+.top{
+    margin: 15px auto;
+}
+#test{
+    height: 34px;
+    line-height: 24px;
+}
+.up-box{
+    border: 1px solid #666666;
+}
+.up-box-out{
+    width: 800px;
+    margin: 10px auto;
+}
+.down-box{
+    border-bottom: 1px solid #666666;
+    border-left: 1px solid #666666;
+    border-right: 1px solid #666666;
+}
+.down-box-out{
+    padding: 0;
+}
+.down-box-item{
+    width: 280px;
+    height: 280px;
+    margin-left: auto;
+    margin-right: auto;
+}

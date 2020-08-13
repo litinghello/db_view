@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>磁疗仪数据库管理软件</title>
+    <link rel="stylesheet" type="text/css" href="../css/other/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/other/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/other/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/black/laydiy.css">
+    <link rel="stylesheet" type="text/css" href="../css/black/common.css">
+
+    <script type="text/javascript" src="../lib/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../lib/layer/layer.js"></script>
+    <script type="text/javascript" src="../lib/laydate/laydate.js"></script>
+    <script type="text/javascript" src="../lib/datatables.min.js"></script>
+	
+	<script type="text/javascript" src="../js/sql-wasm.js"></script>
+</head>
+<body topmargin="0" oncontextmenu="return false" ondragstart="return false" onselectstart ="return false" oncopy="document.selection.empty()" onbeforecopy="return false">
+       <div class="header">
+        <div class="container">
+            <div class="col-md-12 clearfix">
+                <div class="head-text pull-left"><i class="fa fa-cloud-download" aria-hidden="true"> 数据管理</i></div>
+            </div>
+        </div>
+    </div>
+    <div class="container main">
+        <div class="search-form">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label class="sr-only" for="host_addr">地址</label>
+                    <input type="text" class="form-control" id="host_addr" name="host_addr" value="192.168.1.230" placeholder="IP地址">
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="host_port">端口</label>
+                    <input type="text" class="form-control" id="host_port" name="host_port" value="21" placeholder="端口">
+                </div>
+				<div class="form-group">
+                    <label class="sr-only" for="host_user">用户</label>
+                    <input type="password" class="form-control" id="host_user" name="host_user" value="root" placeholder="账户">
+                </div>
+				<div class="form-group">
+                    <label class="sr-only" for="host_pass">密码</label>
+                    <input type="password" class="form-control" id="host_pass" name="host_pass" value="fa" placeholder="密码">
+                </div>
+				<div id="scan_confirm_but" class="btn btn-success">扫描设备</div>
+                <div id="load_confirm_but" class="btn btn-primary">载入数据</div>
+				<div id="delete_confirm_but" class="btn btn-warning">删除数据</div>
+            </form>
+        </div>
+        <div><br></div>
+        <div class="card-body">
+            <div class="row center-block">
+                <table id="datalables_body" class="dataTables_wrapper form-inline hover" style="width:100%">
+                    <thead>
+                    <tr id="table_tr"></tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    <script type="text/javascript">
+			function tables_init(object,data,click_event) {
+                let info_object_columns = [];
+                $("#table_tr").html("");
+                for(let key in object){
+                    info_object_columns.push({data:key});
+                    $("#table_tr").append("<th>"+object[key]+"</th>");
+                }
+                if ($.fn.dataTable.isDataTable('#datalables_body')) {//清除实例
+                    // $('#datalables_body').DataTable().clear();
+                    // $('#datalables_body').DataTable().off();
+                    $('#datalables_body').DataTable().destroy();//释放数据
+                }
+                let table_object = $('#datalables_body').DataTable( {
+                    "scrollX": true,
+                    "scrollY": true,
+                    "processing": true,
+                    data:data,
+                    columns: info_object_columns,
+                    language: {
+                        lengthMenu: '<select class="form-control input-xsmall">' + '<option value="1">1</option>' + '<option value="10">10</option>' + '<option value="20">20</option>' + '<option value="30">30</option>' + '<option value="40">40</option>' + '<option value="50">50</option>' + '</select>',//左上角的分页大小显示。
+                        search: '<span >查找：</span>',//右上角的搜索文本，可以写html标签
+                        paginate: {//分页的样式内容。
+                            previous: "上一页",
+                            next: "下一页",
+                            first: "第一页",
+                            last: "最后"
+                        },
+                        zeroRecords: "没有内容",//table tbody内容为空时，tbody的内容。
+                        info: "第 _START_ - _END_ 共 _PAGES_ 页，共 _TOTAL_ 条，初始_MAX_ 条 ",//左下角的信息显示，大写的词为关键字。
+                        infoEmpty: "0条记录",//筛选为空时左下角的显示。
+                        infoFiltered: "",//筛选之后的左下角筛选提示，
+                        // responsive: true,
+                        // destroy: true
+                    },
+                    paging: true,
+                    pagingType: "full_numbers",//分页样式的类型
+                    dom: 'Blfrtip',
+                    // buttons: ['copy','csv','pdf','excel','pdfHtml5','print']//,
+                    buttons: ['excel']//,
+                }).off('click').on('click', 'tr', function () {
+                    if(table_object.row( this ).data() !== undefined){
+                        click_event(table_object.row( this ).data());
+                    }
+                });
+                $("#datalables_body input[type=search]").css({ width: "auto" });
+            }
+			//更新表
+            function tables_update(db) {
+                let table_row = {
+					//only,name,age,gender,id,infor,type1,time1,type2,time2,type3,time3
+                    "only": "序号",
+                    "name": "姓名",
+                    "age": "年龄",
+                    "gender": "性别",
+                    "id": "证件",
+					"infor": "备注",
+					"type1":"参数1",
+					"time1":"时长1",
+					"type2":"参数2",
+					"time2":"时长2",
+					"type3":"参数3",
+					"time3":"时长3",
+					"updatetime":"治疗时间"
+                };
+                user_database_read_information(db, function (len, data) {
+                    tables_init(table_row, data, function (data) {
+						console.log(data);
+                        /*layer.confirm(`对${data.user_name}资料进行操作?`,{icon: 3, title: '提示',btn: ['删除资料','载入资料','取消']
+                        ,btn1:function (index) {
+                              layer.close(index);
+							  layer.msg("暂不支持!");
+                        },btn2:function (index) {
+                              layer.close(index);
+                        },btn3:function (index) {
+                            layer.close(index);
+                        }});*/
+                    });
+                });
+            }
+			// report_export("print",tag,model,data);
+            //导出文件
+            function export_user_infor(db){
+              user_database_read_information(db, function (len, data) {
+                //let cvs_data="序号,名称,民族,年龄,性别,身高,体重,学历,电话,地址,证件,备注,创建日期,更新日期,\n";
+                let cvs_data="标识,姓名,年龄,性别,证件,信息,方案1类型,方案1时间,方案2类型,方案2时间,方案3类型,方案13时间,更新日期,\n";
+                for(let i=0;i < len; i++){
+                  for(let name in data[i]){
+                    let e = String(data[i][name])
+                    cvs_data += e.indexOf(",") == -1? `${e},`: `"${e}",`;
+                  }
+                  cvs_data += "\n";
+                }
+                const {dialog} = require('electron').remote;
+                const save_fs = require('fs');
+                let path = dialog.showOpenDialogSync({properties: ['openFile','openDirectory']});
+                if(path !== undefined){
+                  save_fs.writeFile(`${path[0]}\\${len}个用户资料.csv`, cvs_data, 'utf-8', (error) => {
+                  })
+                }
+              });
+            }
+
+		$(document).ready(function() {
+			//console.log($("#host_addr").val(),$("#host_port").val(),$("#host_user").val(),$("#host_pass").val());
+			$("#load_confirm_but").click(function () {
+				sftp_download_file({
+					host: $("#host_addr").val(),
+					port: $("#host_port").val(),
+					username: $("#host_user").val(),
+					password: $("#host_pass").val(),
+					type : 'ftp',
+					file : '/sdcard/sqlite3.db',
+					savefile:'./temp.db'
+				});
+				start_load();
+			});
+			$("#delete_confirm_but").click(function () {
+				layer.confirm('删除后数据将被清空，确定要删除？', {icon: 3, title:'警告'}, function(index){
+					layer.close(index);
+					sftp_upload_file({
+						host: $("#host_addr").val(),
+						port: $("#host_port").val(),
+						username: $("#host_user").val(),
+						password: $("#host_pass").val(),
+						type : 'ftp',
+						file : './sqlite3.db',
+						savefile:'/sdcard/sqlite3.db'
+					});
+					start_load();
+				});
+			});
+			$("#scan_confirm_but").click(function () {
+				//export_user_infor("temp.db");
+				layer.confirm('需要扫描'+$("#host_addr").val()+"地址吗？", {icon: 3, title:'警告'}, function(index){
+					layer.close(index);
+					scan_device_use_ipaddr($("#host_addr").val());
+					start_load();
+				});
+			});
+		});
+		
+		var load_index;
+		function start_load(){
+			load_index = layer.load();
+		}
+		function close_load(){
+			layer.close(load_index);
+		}
+		
+		//数据库读取
+		var pwm_type=['γ-氨基丁酸','5-羟色胺','去甲肾上腺素','兴奋递质3','抑制递质13','谷氨酸','乙酰胆碱','多巴胺','兴奋递质6'];
+		function user_database_read_information(path,callback){
+			var fs = require('fs');
+			var filebuffer = fs.readFileSync(path);
+			initSqlJs().then(function(SQL){
+			  var db = new SQL.Database(filebuffer);
+			  var stmt = db.prepare("SELECT * FROM information");
+			  var data = new Array();
+			  while (stmt.step()){
+				let e = stmt.getAsObject();
+				e.type1 = pwm_type[e.type1];
+				e.type2 = pwm_type[e.type2];
+				e.type3 = pwm_type[e.type3];
+				e.gender=e.gender?'男':'女';
+				e.only= data.length;
+				console.log(e);
+				data.push(e);
+			  }
+			  callback(data.length,data);
+			});
+		}
+		//数据库读取
+		
+		//ipc 通道
+		const {ipcRenderer} = require('electron');
+		ipcRenderer.on('message', (event, msg) => {	
+			console.log(msg);
+			if(msg.type == 'download'){
+				close_load();
+				if(!msg.msg){
+					layer.msg("载入成功");
+					tables_update("temp.db");
+				}else{
+					layer.msg("载入失败");
+				}
+			}
+			if(msg.type == 'upload'){
+				close_load();
+				if(!msg.msg){
+					layer.msg("清除数据成功");
+				}else{
+					layer.msg("清除失败");
+				}
+			}
+		});
+		function sftp_download_file(config){
+			ipcRenderer.send('download', config);
+		}
+		function sftp_upload_file(config){
+			ipcRenderer.send('upload', config);
+		}
+		//ipc 通道
+		
+		var scan_addr = new Array();
+		//扫描设备
+		function scan_device_use_ipaddr(host_addr) {
+			let scan_count = 0;
+			let max_scan_count = 255;
+			let ip_array = host_addr.split(".");
+			let sacan_timer = setInterval(function () {
+				let ip_addr = ip_array[0]+"."+ip_array[1]+"."+ip_array[2]+"."+scan_count;
+				scan_device_list_display(ip_addr);
+				if(++scan_count >= max_scan_count){
+					let scan_addr_str="";
+					scan_addr.forEach((item,index,array)=>{
+						scan_addr_str += item+"<br>";
+					});
+					close_load();
+					layer.alert(scan_addr_str,{title:'以下为查找到的设备：'});
+					clearInterval(sacan_timer);
+				}else {
+					console.log(ip_addr+"扫描进度:"+Math.floor(scan_count*100/max_scan_count)+"%");
+				}
+			},100);
+		}
+		//
+		function scan_device_list_display(ip_addr) {
+			let links = "http://"+ip_addr+"";
+			$.ajax({
+				timeout:500,
+				url: links,
+				complete : function(XMLHttpRequest,status){ //请求完成后最终执行参数
+					if(status === "success"){//超时,status还有success,error等值的情况
+						console.log(XMLHttpRequest.status);
+						if(XMLHttpRequest.status == 200){
+							scan_addr.push(ip_addr);
+						}
+					}
+				}
+			})
+		}
+    </script>
+</body>
+</html>

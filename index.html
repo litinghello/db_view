@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>优品睡眠体感震动音乐助眠系统</title>
+    <link rel="stylesheet" type="text/css" href="js/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="js/layer/theme/default/layer.css"/>
+    <!-- <link rel="stylesheet" type="text/css" href="css/jquery.range.css"/> -->
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <script type="text/javascript" src="js/jquery-2.1.4.js"></script>
+    <script type="text/javascript" src="js/jquery.form.js"></script>
+    <!-- <script type="text/javascript" src="js/jquery.range.js"></script> -->
+    <script type="text/javascript" src="js/layer/layer.js"></script>
+    <script type="text/javascript" src="js/layui/layui.js"></script>
+
+    <script type="text/javascript" src="js/user_init.js"></script>
+    <script type="text/javascript" src="js/user_check.js"></script>
+    <script type="text/javascript" src="js/user_storage.js"></script>
+    <script type="text/javascript" src="js/user_crypto.js"></script>
+
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/logic_scan_device.js"></script>
+    <script type="text/javascript" src="js/logic_class_list.js"></script>
+    <script type="text/javascript" src="js/logic_play_music.js"></script>
+    <script type="text/javascript" src="js/logic_create_list.js"></script>
+    <script type="text/javascript" src="js/logic_mode_select.js"></script>
+    <script type="text/javascript" src="js/interface_transfer.js"></script>
+    <script type="text/javascript" src="js/create_music_file.js"></script>
+
+
+
+</head>
+<body onselectstart="return false" ondragstart="return false;">
+<div id="device_set_volume_area"  style="width: 90%;height: 2.5rem;text-align: center;font-size: 0.2rem" hidden>
+    <div style="margin: 4% 10%;">左耳(ch1)<div id="device_set_volume_ch1" class="layui_slider"></div></div>
+    <div style="margin: 4% 10%;">右耳(ch2)<div id="device_set_volume_ch2" class="layui_slider"></div></div>
+    <div style="margin: 4% 10%;">项部(ch3)<div id="device_set_volume_ch3" class="layui_slider"></div></div>
+    <div style="margin: 4% 10%;">腰部(ch4)<div id="device_set_volume_ch4" class="layui_slider"></div></div>
+    <div style="margin: 4% 10%;">左大腿(ch5)<div id="device_set_volume_ch5" class="layui_slider"></div></div>
+    <div style="margin: 4% 10%;">右大腿(ch6)<div id="device_set_volume_ch6" class="layui_slider"></div></div>
+    <div style="margin: 4% 10%;">左小腿(ch7)<div id="device_set_volume_ch7" class="layui_slider"></div></div>
+    <div style="margin: 4% 10%;">右小腿(ch8)<div id="device_set_volume_ch8" class="layui_slider"></div></div>
+
+</div>
+<div id="device_system_infor_area" hidden>
+    <div>
+        <span>主机地址</span>
+        <span id="device_play_addr"></span>
+    </div>
+    <div>
+        <span>MAC地址</span>
+        <span id="device_play_mac"></span>
+    </div>
+    <div>
+        <span>操作系统类型</span>
+        <span id="device_system_type"></span>
+    </div>
+    <div>
+        <span>操作系统CPU</span>
+        <span id="device_cpu_type"></span>
+    </div>
+    <div>
+        <span>CPU负荷</span>
+        <span id="device_cpu_load"></span>
+    </div>
+    <div>
+        <span>空闲内存</span>
+        <span id="device_free_ram"></span>
+    </div>
+    <div>
+        <span>磁盘使用量</span>
+        <span id="device_free_disk"></span>
+    </div>
+    <div>
+        <span>存储器类型</span>
+        <span id="device_storage_type"></span>
+    </div>
+    <div>
+        <span>剩余播放次数</span>
+        <span id="device_play_count"></span>
+    </div>
+    <div>
+        <span>固件版本</span>
+        <span id="device_version"></span>
+    </div>
+</div>
+
+<header>
+    <div class="headerL">
+        <p>优品睡眠体感震动音乐助眠系统</p>
+        <img class="headerImg1" src="image/u6.png" alt=""/>
+        <img class="headerImg2" src="image/u8.png" alt=""/>
+    </div>
+    <div class="headerR">
+        <div id="logo">
+            <img src="image/u4.png" draggable="false" alt=""/>
+            <p>贵州优品睡眠健康产业有限公司</p>
+        </div>
+        <div class="headerR1"></div>
+        <div class="headerR2">
+            <ul>
+                <li>
+                    <a id="jump_main_view" href="javascript:void(0)" >
+                        <i class="layui-icon">&#xe68e;</i>
+                        <span>主 页</span>
+                    </a>
+                    <b></b>
+                </li>
+                <li>
+                    <a id="jump_create_view" href="javascript:void(0)">
+                        <i class="layui-icon" >&#xe6b2;</i>
+                        <span>预 览</span>
+                    </a>
+                    <b></b>
+                </li>
+                <li>
+                    <a id="jump_setting_view" href="javascript:void(0)">
+                        <i class="layui-icon" >&#xe620;</i>
+                        <span>设 置</span>
+                    </a>
+                </li>
+            </ul>
+            <img class="headerImg3" src="image/u10.png" alt=""/>
+        </div>
+    </div>
+</header>
+<section>
+    <img class="floatBar" src="image/u53.png" alt=""/>
+
+    <div class="device_list_area">
+        <p>
+            <span>设备列表</span>
+            <i class="layui-icon" style="font-size: 0.3rem">&#xe62a;</i>
+            <img class="bottomLine" src="image/u162.png" alt=""/>
+        </p>
+        <div>
+            <div class="deviceListRow listRow">
+                <span class="device_list_index">序号</span>
+                <span class="device_list_name">名称</span>
+                <span class="device_list_status">状态</span>
+            </div>
+            <img class="bottomLine" src="image/u162.png" alt=""/>
+            <ul id="device_list_area" title="单机鼠标左键选择设备，双击左键修改名称，单机鼠标右键删除设备。">
+                <li id="device_li_list0" style="color: #bebebe" hidden>
+                    <div class="deviceListRow listRow" style="border:1px solid transparent">
+                        <span class="device_list_index"></span>
+                        <span class="device_list_name" value=""></span>
+                        <span class="device_list_status"><i class="layui-icon" style="font-size: 0.25rem;color:#E60012">&#xe64d;</i></span>
+                    </div>
+                    <img class="bottomLine" src="image/u162.png" alt=""/>
+                </li>
+                <li id="device_li_list1" style="color: #bebebe" hidden>
+                    <div class="deviceListRow listRow" style="border:1px solid transparent">
+                        <span class="device_list_index"></span>
+                        <span class="device_list_name" value=""></span>
+                        <span class="device_list_status"><i class="layui-icon" style="font-size: 0.25rem;color:#E60012">&#xe64d;</i></span>
+                    </div>
+                    <img class="bottomLine" src="image/u162.png" alt=""/>
+                </li>
+                <li id="device_li_list2" style="color: rgb(190, 190, 190);" hidden>
+                    <div class="deviceListRow listRow" style="border:1px solid transparent">
+                        <span class="device_list_index"></span>
+                        <span class="device_list_name" value=""></span>
+                        <span class="device_list_status"><i class="layui-icon" style="font-size: 0.25rem;color:#E60012">&#xe64d;</i></span>
+                    </div>
+                    <img class="bottomLine" src="image/u162.png" alt=""/>
+                </li>
+                <li id="device_li_list3" style="color: rgb(190, 190, 190);" hidden>
+                    <div class="deviceListRow listRow" style="border:1px solid transparent">
+                        <span class="device_list_index"></span>
+                        <span class="device_list_name" value=""></span>
+                        <span class="device_list_status"><i class="layui-icon" style="font-size: 0.25rem;color:#E60012">&#xe64d;</i></span>
+                    </div>
+                    <img class="bottomLine" src="image/u162.png" alt=""/>
+                </li>
+                <li id="device_li_list4" style="color: rgb(190, 190, 190);" hidden>
+                    <div class="deviceListRow listRow" style="border:1px solid transparent">
+                        <span class="device_list_index"></span>
+                        <span class="device_list_name" value=""></span>
+                        <span class="device_list_status"><i class="layui-icon" style="font-size: 0.25rem;color:#E60012">&#xe64d;</i></span>
+                    </div>
+                    <img class="bottomLine" src="image/u162.png" alt=""/>
+                </li>
+                <li id="device_li_list5" style="color: rgb(190, 190, 190);" hidden>
+                    <div class="deviceListRow listRow" style="border:1px solid transparent">
+                        <span class="device_list_index"></span>
+                        <span class="device_list_name" value=""></span>
+                        <span class="device_list_status"><i class="layui-icon" style="font-size: 0.25rem;color:#E60012">&#xe64d;</i></span>
+                    </div>
+                    <img class="bottomLine" src="image/u162.png" alt=""/>
+                </li>
+                <li id="device_li_list6" style="color: rgb(190, 190, 190);" hidden>
+                    <div class="deviceListRow listRow" style="border:1px solid transparent">
+                        <span class="device_list_index"></span>
+                        <span class="device_list_name" value=""></span>
+                        <span class="device_list_status"><i class="layui-icon" style="font-size: 0.25rem;color:#E60012">&#xe64d;</i></span>
+                    </div>
+                    <img class="bottomLine" src="image/u162.png" alt=""/>
+                </li>
+                <li id="device_li_list7" style="color: rgb(190, 190, 190);" hidden>
+                    <div class="deviceListRow listRow" style="border:1px solid transparent">
+                        <span class="device_list_index"></span>
+                        <span class="device_list_name" value=""></span>
+                        <span class="device_list_status"><i class="layui-icon" style="font-size: 0.25rem;color:#E60012">&#xe64d;</i></span>
+                    </div>
+                    <img class="bottomLine" src="image/u162.png" alt=""/>
+                </li>
+                <li id="device_li_list8" style="color: rgb(190, 190, 190);" hidden>
+                    <div class="deviceListRow listRow" style="border:1px solid transparent">
+                        <span class="device_list_index"></span>
+                        <span class="device_list_name" value=""></span>
+                        <span class="device_list_status"><i class="layui-icon" style="font-size: 0.25rem;color:#E60012">&#xe64d;</i></span>
+                    </div>
+                    <img class="bottomLine" src="image/u162.png" alt=""/>
+                </li>
+                <li id="device_li_list9" style="color: rgb(190, 190, 190);" hidden>
+                    <div class="deviceListRow listRow" style="border:1px solid transparent">
+                        <span class="device_list_index"></span>
+                        <span class="device_list_name" value=""></span>
+                        <span class="device_list_status"><i class="layui-icon" style="font-size: 0.25rem;color:#E60012">&#xe64d;</i></span>
+                    </div>
+                    <img class="bottomLine" src="image/u162.png" alt=""/>
+                </li>
+            </ul>
+            <div id="device_list_button_area">
+                <button id="device_list_scan" class="btn">扫描</button>
+                <button id="device_list_add" class="btn">添加</button>
+            </div>
+        </div>
+    </div>
+    <img class="floatBar" src="image/u53.png" alt=""/>
+
+    <div class="device_infor_status_area">
+        <div id="device_infor_status_infor">
+            <div id="device_infor_area">
+                <button id="device_infor_display" class="btn">详情</button>
+            </div>
+            <p>
+                <span>设备状态</span>
+                <i class="layui-icon" style="font-size: 0.3rem">&#xe628;</i>
+                <img class="bottomLine" src="image/u28.png" alt=""/>
+            </p>
+
+            <div>
+                <ul>
+                    <li>
+                        <div class="listRow deviceMsgRow">
+                            <span>状态</span>
+                            <span id="device_infor_d_status">无</span>
+                        </div>
+                        <img class="bottomLine" src="image/u28.png" alt=""/>
+                    </li>
+                    <li>
+                        <div class="listRow deviceMsgRow">
+                            <span>设备名称</span>
+                            <span id="device_infor_d_name">无</span>
+                        </div>
+                        <img class="bottomLine" src="image/u28.png" alt=""/>
+                    </li>
+                    <li>
+                        <div class="listRow deviceMsgRow">
+                            <span>设备型号</span>
+                            <span id="device_infor_d_type">无</span>
+                        </div>
+                        <img class="bottomLine" src="image/u28.png" alt=""/>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        <div id="device_power_area">
+            <div id="device_power_button">
+                <button id="device_power_restart" class="btn">重启</button>
+                <button id="device_power_shutdown" class="btn">关机</button>
+            </div>
+            <p>
+                <span>连接信息</span>
+                <i class="layui-icon" style="font-size: 0.3rem">&#xe60e;</i>
+                <img class="bottomLine" src="image/u28.png" alt=""/>
+            </p>
+
+            <div>
+                <ul>
+                    <li>
+                        <div class="listRow deviceMsgRow">
+                            <span>运行状态</span>
+                            <span id="device_infor_d_run">无</span>
+                        </div>
+                        <img class="bottomLine" src="image/u28.png" alt=""/>
+                    </li>
+                    <li>
+                        <div class="listRow deviceMsgRow">
+                            <span>同步时间</span>
+                            <span id="device_last_connect_time">无</span>
+                        </div>
+                        <img class="bottomLine" src="image/u28.png" alt=""/>
+                    </li>
+                    <li>
+                        <div class="listRow deviceMsgRow">
+                            <span>故障次数</span>
+                            <span id="device_infor_d_error">0</span>
+                        </div>
+                        <img class="bottomLine" src="image/u28.png" alt=""/>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        <div id="device_user_area">
+            <div id="device_user_button">
+                <button class="btn" id="device_user_add">登记</button>
+                <button class="btn" id="device_user_load">载入</button>
+                <button class="btn" id="device_user_infor">记录</button>
+            </div>
+            <p>
+                <span>用户信息</span>
+                <i class="layui-icon" style="font-size: 0.3rem">&#xe613;</i>
+                <img class="bottomLine" src="image/u28.png" alt=""/>
+            </p>
+            <div>
+                <ul>
+                    <li hidden>
+                        <label for="user_number"></label><input id="user_number" value=null>
+                    </li>
+                    <li>
+                        <div class="listRow deviceMsgRow">
+                            <span>姓名</span>
+                            <span id="user_name"></span>
+                        </div>
+                        <img class="bottomLine" src="image/u28.png" alt=""/>
+                    </li>
+                    <li>
+                        <div class="listRow deviceMsgRow">
+                            <span>年龄</span>
+                            <span id="user_age"></span>
+                        </div>
+                        <img class="bottomLine" src="image/u28.png" alt=""/>
+                    </li>
+                    <li>
+                        <div class="listRow deviceMsgRow">
+                            <span>备注</span>
+                            <span id="user_remarks"></span>
+                        </div>
+                        <img class="bottomLine" src="image/u28.png" alt=""/>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <img class="floatBar" src="image/u53.png" alt=""/>
+
+    <div id="mainPage">
+        <div class="treatmentPlan">
+            <p>
+                <span>方案</span>
+                <i class="layui-icon" style="font-size: 0.3rem">&#xe63c;</i>
+                <img class="bottomLine" src="image/u252.png" alt=""/>
+            </p>
+
+            <div id="treatmentList">
+                <ul>
+                    <li id="class_list_class1">
+                        助眠改善
+                        <ul>
+                            <li onclick="select_device_list_class('class1','subclass1')">入睡困难</li>
+                            <li onclick="select_device_list_class('class1','subclass2')">睡眠质量差</li>
+                            <li onclick="select_device_list_class('class1','subclass3')">复合症状</li>
+                        </ul>
+                    </li>
+                    <li id="class_list_class2">情绪改善
+                        <ul>
+                            <li onclick="select_device_list_class('class2','subclass1')">焦虑情绪</li>
+                            <li onclick="select_device_list_class('class2','subclass2')">抑郁情绪</li>
+                        </ul>
+                    </li>
+                    <li id="class_list_class3">老年康复
+                        <ul>
+                            <li onclick="select_device_list_class('class3','subclass1')">认知障碍</li>
+                            <li onclick="select_device_list_class('class3','subclass2')">交流障碍</li>
+                            <li onclick="select_device_list_class('class3','subclass3')">情绪障碍</li>
+                        </ul>
+                    </li>
+                    <li id="class_list_class4">疼痛缓解
+                        <ul>
+                            <li onclick="select_device_list_class('class4','subclass1')">神经疼痛</li>
+                            <li onclick="select_device_list_class('class4','subclass2')">病理性疼痛</li>
+                            <li onclick="select_device_list_class('class4','subclass3')">心理性疼痛</li>
+                        </ul>
+                    </li>
+                    <li id="class_list_class5">亚健康调理
+                        <ul>
+                            <li onclick="select_device_list_class('class5','subclass1')">疲劳</li>
+                            <li onclick="select_device_list_class('class5','subclass2')">胃肠功能</li>
+                            <li onclick="select_device_list_class('class5','subclass3')">认知记忆功能</li>
+                            <li onclick="select_device_list_class('class5','subclass4')">美容保健</li>
+                        </ul>
+                    </li>
+                    <li id="class_list_class6">自定义
+                        <ul>
+                            <li onclick="select_device_list_class('class6','subclass1')">分类1</li>
+                            <li onclick="select_device_list_class('class6','subclass2')">分类2</li>
+                            <li onclick="select_device_list_class('class6','subclass3')">分类3</li>
+                            <li onclick="select_device_list_class('class6','subclass4')">分类4</li>
+                            <li onclick="select_device_list_class('class6','subclass5')">分类5</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div id="class_list_area"  class="treatmentBoxBig">
+                    <div class="treatmentBox" title="单机鼠标左键选择方案，单机鼠标右键删除方案。">
+                        <div class="listRow treatmentListRow">
+                            <span>序号</span>
+                            <span>方案名称</span>
+                            <!--span>时长</span-->
+                        </div>
+                        <img class="bottomLine" src="image/u258.png" alt=""/>
+                        <ul>
+                            <li id="class_li_list_id0" hidden>
+                                <div class="treatmentListRow listRow">
+                                    <span class="class_list_index"></span>
+                                    <span class="class_list_name"></span>
+                                </div>
+                                <img src="image/u258.png" class="bottomLine">
+                            </li>
+                            <li id="class_li_list_id1" hidden>
+                                <div class="treatmentListRow listRow">
+                                    <span class="class_list_index"></span>
+                                    <span class="class_list_name"></span>
+                                </div>
+                                <img src="image/u258.png" class="bottomLine">
+                            </li>
+                            <li id="class_li_list_id2" hidden>
+                                <div class="treatmentListRow listRow">
+                                    <span class="class_list_index"></span>
+                                    <span class="class_list_name"></span>
+                                </div>
+                                <img src="image/u258.png" class="bottomLine">
+                            </li>
+                            <li id="class_li_list_id3" hidden>
+                                <div class="treatmentListRow listRow">
+                                    <span class="class_list_index"></span>
+                                    <span class="class_list_name"></span>
+                                </div>
+                                <img src="image/u258.png" class="bottomLine">
+                            </li>
+                            <li id="class_li_list_id4" hidden>
+                                <div class="treatmentListRow listRow">
+                                    <span class="class_list_index"></span>
+                                    <span class="class_list_name"></span>
+                                </div>
+                                <img src="image/u258.png" class="bottomLine">
+                            </li>
+                        </ul>
+                    </div>
+                    <img class="treatmentBoxImg" src="image/u354.png" alt=""/>
+
+                    <div class="treatmentBox">
+                        <div class="listRow treatmentListRow">
+                            <span>序号</span>
+                            <span>方案名称</span>
+                            <!--span>时长</span-->
+                        </div>
+                        <img class="bottomLine" src="image/u258.png" alt=""/>
+                        <ul class="treatmentUl2 treatmentUl">
+                            <li id="class_li_list_id5" hidden>
+                                <div class="treatmentListRow listRow">
+                                    <span class="class_list_index"></span>
+                                    <span class="class_list_name"></span>
+                                </div>
+                                <img src="image/u258.png" class="bottomLine">
+                            </li>
+                            <li id="class_li_list_id6" hidden>
+                                <div class="treatmentListRow listRow">
+                                    <span class="class_list_index"></span>
+                                    <span class="class_list_name"></span>
+                                </div>
+                                <img src="image/u258.png" class="bottomLine">
+                            </li>
+                            <li id="class_li_list_id7" hidden>
+                                <div class="treatmentListRow listRow">
+                                    <span class="class_list_index"></span>
+                                    <span class="class_list_name"></span>
+                                </div>
+                                <img src="image/u258.png" class="bottomLine">
+                            </li>
+                            <li id="class_li_list_id8" hidden>
+                                <div class="treatmentListRow listRow">
+                                    <span class="class_list_index"></span>
+                                    <span class="class_list_name"></span>
+                                </div>
+                                <img src="image/u258.png" class="bottomLine">
+                            </li>
+                            <li id="class_li_list_id9" hidden>
+                                <div class="treatmentListRow listRow">
+                                    <span class="class_list_index"></span>
+                                    <span class="class_list_name"></span>
+                                </div>
+                                <img src="image/u258.png" class="bottomLine">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="boxPagination" style="margin-left: 1.25rem;">
+                    <button id="class_list_page_prev" class="prevPage btnNo">上一页</button>
+                    <p>第<b id="class_list_current_page" class="page">1</b>页 共<b id="class_list_total_page"  class="allPage">1</b>页</p>
+                    <button  id="class_list_page_next" class="nextPage btnNo">下一页</button>
+                </div>
+                <img class="pagimg" src="image/u370.png" alt=""/>
+
+            </div>
+
+            <div id="music_play_area">
+                <!--<audio id="audio" src="../file/music/001.mp3" controls="controls"></audio>-->
+                <!--div id="showCtlBtnBox">
+                    <button class="btn" id="showCtl">查看操作记录</button>
+                    <button class="btn" id="showCtl2">清除操作记录</button>
+                </div-->
+                <div id="audioCtl">
+                    <i id="music_play_set_volume" class="layui-icon" title="音量设置">&#xe645;</i>
+                    <i id="music_play_prev" class="layui-icon" title="退后2分钟">&#xe65a;</i>
+                    <i id="music_play_play" class="layui-icon" title="播放/暂停">&#xe652;</i>
+                    <i id="music_play_next" class="layui-icon" title="前跳2分钟">&#xe65b;</i>
+                    <i id="music_play_stop" class="layui-icon" title="停止" hidden>&#xe617;</i>
+                </div>
+                <div id="play_progress">
+                    <span id="device_play_progress_list_class"> </span>
+                    <!--span id="device_play_progress_music"> </span-->
+                    <span>
+                        <span id="device_play_progress_time">0:0:0</span> - <span id="device_play_total_time">0:0:0</span>
+                    </span>
+
+                    <div>
+                        <div id="device_play_progress"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="list_infor_area" class="listHandle" hidden>
+                <div>
+                    <ul>
+                        <li>序号</li>
+                        <li>类别</li>
+                        <li>值</li>
+                        <li>说明</li>
+                    </ul>
+                    <div id="list_content_area">
+                        <ul id="list_content_infor">
+                            <li id="list_content_index0"></li><li id="list_content_name0"></li><li id="list_content_time0"></li><li><a id="list_content_delete0" href="javascript:void(0)"></a></li>
+                            <li id="list_content_index1"></li><li id="list_content_name1"></li><li id="list_content_time1"></li><li><a id="list_content_delete1" href="javascript:void(0)"></a></li>
+                            <li id="list_content_index2"></li><li id="list_content_name2"></li><li id="list_content_time2"></li><li><a id="list_content_delete2" href="javascript:void(0)"></a></li>
+                            <li id="list_content_index3"></li><li id="list_content_name3"></li><li id="list_content_time3"></li><li><a id="list_content_delete3" href="javascript:void(0)"></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="list_content_button">
+                    <div class="boxPagination">
+                        <button id="list_content_page_prev" class="btnNo">上一页</button>
+                        <p>
+                            第<b id="list_content_current_page">1</b>页
+                            共<b id="list_content_total_page">1</b>页
+                        </p>
+                        <button id="list_content_page_next" class="btnNo">下一页</button>
+                    </div>
+                    <img src="image/u762.png" alt=""/>
+                    <div id="list_content_save" class="save_button">
+                        <!--button id="list_create_save_confirm" class="btn">保存方案</button-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="list_play_energy_area" class="realtimeData">
+            <p>
+                <span>实时数据</span>
+                <i class="layui-icon" style="font-size: 0.3rem">&#xe62c;</i>
+                <img class="bottomLine" src="image/u222.png" alt=""/>
+            </p>
+
+            <div class="dataImg">
+                <div class="dataBody">
+                    <p>左耳：<span id="list_play_energy0">0</span>%</p>
+                    <p>右耳：<span id="list_play_energy1">0</span>%</p>
+                    <p>颈部：<span id="list_play_energy2">0</span>%</p>
+                    <p>腰部：<span id="list_play_energy3">0</span>%</p>
+                    <p>左大腿：<span id="list_play_energy4">0</span>%</p>
+                    <p>右大腿：<span id="list_play_energy5">0</span>%</p>
+                    <p>左小腿：<span id="list_play_energy6">0</span>%</p>
+                    <p>右小腿：<span id="list_play_energy7">0</span>%</p>
+                    <img class="bodyImg" src="image/u123.png" alt=""/>
+                    <img id="list_play_image_energy0" src="image/u145.png" alt="" style="visibility:hidden"/>
+                    <img id="list_play_image_energy1" src="image/u145.png" alt="" style="visibility:hidden;"/>
+                    <img id="list_play_image_energy2" src="image/u145.png" alt="" style="visibility:hidden"/>
+                    <img id="list_play_image_energy3" src="image/u145.png" alt="" style="visibility:hidden"/>
+                    <img id="list_play_image_energy4" src="image/u145.png" alt="" style="visibility:hidden"/>
+                    <img id="list_play_image_energy5" src="image/u145.png" alt="" style="visibility:hidden"/>
+                    <img id="list_play_image_energy6" src="image/u141.png" alt="" style="visibility:hidden"/>
+                    <img id="list_play_image_energy7" src="image/u141.png" alt="" style="visibility:hidden"/>
+                </div>
+                <img class="bottomLine" src="image/u228.png" alt=""/>
+
+                <div class="device_camera_area">
+                    <div id="device_camera_div">
+                        <img id="device_camera_video" src="image/u236.png" alt=""/>
+                        <!--i class="layui-icon">&#xe6ed;</i-->
+                    </div>
+                    <button class="btn" id="device_camera_open">连接摄像头</button>
+                </div>
+            </div>
+        </div>
+        <div id="list_create_area" class="setMsg" hidden>
+            <p>
+                <span>添加方案</span>
+                <i class="layui-icon" style="font-size: 0.3rem">&#xe61f;</i>
+                <img class="bottomLine" src="image/u222.png" alt=""/>
+            </p>
+
+            <div class="setMessage">
+                <div id="list_create_button_area" class="messageBtn">
+                    <button id="list_create_input_button" class="btn">新增方案</button>
+                </div>
+                <div id="list_create_file_area" class="messageBox">
+                    <div>
+                        方案制作(选择震动强度或者音乐文件)
+                        <!--input id="list_create_list_name" type="text" placeholder="避免方案名重复"/-->
+                    </div>
+                    <div>
+                        <span>部位</span>
+                        <span>频率(Hz)</span>
+                        <span>强度(db)</span>
+                    </div>
+                    <div>
+                        <div id="list_create_file_is_energy">
+                            <ul>
+                                <li>
+                                    <span>左耳(ch1)</span>
+                                    <span>
+                                        <label><input class="numSpan" id="list_hz_ch1" type="number" min="0" max="5000" value="2000"/></label>
+                                    </span>
+                                    <span>
+                                        <label><input class="numSpan" id="list_db_ch1" type="number" min="0" max="500" value="80"/></label>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span>右耳(ch2)</span>
+                                    <span>
+                                        <label><input class="numSpan" id="list_hz_ch2" type="number" min="0" max="5000" value="2000"/></label>
+                                    </span>
+                                    <span>
+                                        <label><input class="numSpan" id="list_db_ch2" type="number" min="0" max="500" value="80"/></label>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span>项部(ch3)</span>
+                                    <span>
+                                        <label><input class="numSpan" id="list_hz_ch3" type="number" min="0" max="5000" value="2000"/></label>
+                                    </span>
+                                    <span>
+                                        <label><input class="numSpan" id="list_db_ch3" type="number" min="0" max="500" value="80"/></label>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span>腰部(ch4)</span>
+                                    <span>
+                                        <label><input class="numSpan" id="list_hz_ch4" type="number" min="0" max="5000" value="2000"/></label>
+                                    </span>
+                                    <span>
+                                        <label><input class="numSpan" id="list_db_ch4" type="number" min="0" max="500" value="80"/></label>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span>左大腿(ch5)</span>
+                                    <span>
+                                        <label><input class="numSpan" id="list_hz_ch5" type="number" min="0" max="5000" value="2000"/></label>
+                                    </span>
+                                    <span>
+                                        <label><input class="numSpan" id="list_db_ch5" type="number" min="0" max="500" value="80"/></label>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span>右大腿(ch6)</span>
+                                    <span>
+                                        <label><input class="numSpan" id="list_hz_ch6" type="number" min="0" max="5000" value="2000"/></label>
+                                    </span>
+                                    <span>
+                                        <label><input class="numSpan" id="list_db_ch6" type="number" min="0" max="500" value="80"/></label>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span>左小腿(ch7)</span>
+                                    <span>
+                                        <label><input class="numSpan" id="list_hz_ch7" type="number" min="0" max="5000" value="2000"/></label>
+                                    </span>
+                                    <span>
+                                        <label><input class="numSpan" id="list_db_ch7" type="number" min="0" max="500" value="80"/></label>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span>右小腿(ch8)</span>
+                                    <span>
+                                        <label><input class="numSpan" id="list_hz_ch8" type="number" min="0" max="5000" value="2000"/></label>
+                                    </span>
+                                    <span>
+                                        <label><input class="numSpan" id="list_db_ch8" type="number" min="0" max="500" value="80"/></label>
+                                    </span>
+                                </li>
+                            </ul>
+                            <div class="shichang">
+                                <span>时长</span>
+                                <span class="danwei">
+                                    <label for="list_create_energy_time"></label><input id="list_create_energy_time" value="60" type="number" min="0" max="9999" step="1"/>
+                                    <span id="list_create_energy_time_s">(秒)</span>
+                                </span>
+                            </div>
+                            <img src="image/u563.png" alt=""/>
+                        </div>
+                        <div id="list_create_file_is_music" style="text-align: center;">
+                            <span class="a-upload btn">
+                                <form id="list_create_input_music">
+                                    <input id="list_create_input_file" type="file" name="fileUpload"/>选择音乐文件
+                                </form>
+                            </span>
+
+                        </div>
+                    </div>
+                    <div class="addItemBox">
+                        <span>方案名称</span>
+                        <label for="list_create_music_name"></label><input id="list_create_music_name" type="text" placeholder="" style="width: 50%"/>
+                        <button class="btn" id="list_create_file_confirm" style="width: 20%">&nbsp上&nbsp传&nbsp</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="settingPage">
+        <p>
+            <span>软件配置</span>
+            <i class="layui-icon" style="font-size: 0.3rem">&#xe631;</i>
+            <img class="bottomLine" src="image/u252.png" alt=""/>
+        </p>
+        <div class="deviceSetting">
+            <p>
+            </p>
+            <div>
+                <ul>
+                    <li hidden>
+                        <span>新密码</span>
+                        <span>
+                            <label for="soft_config_soft_password"></label><input id="soft_config_soft_password" type="password" value="password"/>
+                        </span>
+                    </li>
+                    <li>
+                        <span>软件主题</span>
+                        <span>
+                            <label for="soft_config_theme"></label><select id="soft_config_theme">
+                                <option value="0">黑色</option>
+                                <option value="1">白色</option>
+                            </select>
+                        </span>
+                    </li>
+                    <li>
+                        <span>设备通信端口</span>
+                        <span>
+                            <label for="soft_config_device_port"></label><input id="soft_config_device_port" type="text" value="8000"/>
+                        </span>
+                    </li>
+                    <li>
+                        <span>同步服务器地址</span>
+                        <span>
+                            <label for="soft_config_server_url"></label><input id="soft_config_server_url" type="text" value="47.95.119.159"/>
+                        </span>
+                    </li>
+                    <li>
+                        <span>状态同步间隔(秒)</span>
+                        <span>
+                            <label for="soft_config_status_sync_time"></label><input id="soft_config_status_sync_time" type="text" value="1"/>
+                        </span>
+                    </li>
+                    <li>
+                        <span>重连次数间隔(秒)</span>
+                        <span>
+                            <label for="soft_config_reconnect_time"></label><input id="soft_config_reconnect_time" type="text" value="5"/>
+                        </span>
+                    </li>
+                    <li>
+                        <span>最大设备连接数(个)</span>
+                        <span>
+                            <label for="soft_config_connect_count"></label><input id="soft_config_connect_count" type="text" value="10"/>
+                        </span>
+                    </li>
+                    <li>
+                        <span>数据目录设置</span>
+                        <span>
+                            <input id="soft_config_userdata_path" type="text" readonly="readonly"></input>
+                        </span>
+                    </li>
+                    <li>
+                        <span>存储介质</span>
+                        <span>
+                            <label for="soft_config_storage"></label><select id="soft_config_storage">
+                                <option value="self_disk">内部存储器</option>
+                                <option value="usb_disk">U盘</option>
+                                <option value="mh_disk">移动硬盘</option>
+                                <option value="sd_disk">microSD卡</option>
+                            </select>
+                        </span>
+                    </li>
+                    <li>
+                        <span>数据同步</span>
+                        <span>
+                            <label for="soft_config_server_sync"></label><input id="soft_config_server_sync" value="1" type="checkbox" checked/>
+                        </span>
+                    </li>
+                    <li id="soft_config_update_area">
+                        <span>固件更新</span>
+                        <span>
+                            <label for="soft_config_update_firmware" id="soft_config_update_firmware_name">选择固件</label>
+                            <input id="soft_config_update_firmware"  type="file" style="display:none"/>
+                        </span>
+                    </li>
+                    <li>
+                        <span>软件版本</span>
+                        <span>
+                            <label for="soft_config_soft_ver" id="soft_config_soft_ver">v3.0</label>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <b class="soft_config_button_area">
+            <img src="image/u370.png" alt=""/>
+            <div>
+                <button id="soft_config_save" class="btn">保存设置</button>
+                <button id="soft_config_reset" class="btn">清除配置</button>
+                <button id="soft_config_password" class="btn">修改软件密码</button>
+                <button id="change_device_password" class="btn">修改设备密码</button>
+            </div>
+        </b>
+    </div>
+    <label for="input_device_infor_copy"></label><input id="input_device_infor_copy" type="text" hidden/>
+</section>
+<script src="js/logic_user_action.js"></script>
+</body>
+</html>

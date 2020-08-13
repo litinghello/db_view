@@ -1,0 +1,52 @@
+@charset "utf-8";
+
+/**
+ * layer 自定义
+ */
+
+
+body .demo-black{
+    border: none;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+body .demo-black .layui-layer-title{
+    background:#444444;
+    color:#E0E0E0;
+    border: none;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+body .demo-black .layui-layer-content{
+    padding: 10px 15px;
+}
+body .demo-black .layui-layer-btn{
+    border-top:1px solid #E9E7E7
+}
+body .demo-black .layui-layer-btn a{
+    background:#333;
+}
+body .demo-black .layui-layer-btn .layui-layer-btn1{
+    background:#999;
+}
+
+
+/**
+ *laydate 自定义
+ */
+
+body .laydate-theme-black{
+    background: #444444;
+    border: none;
+    width: 100%;
+}
+
+body .laydate-theme-black .layui-laydate-main {
+    width: 100%;
+}
+
+body .laydate-theme-black .layui-laydate-content table{
+    width: 100%;
+}
+
+

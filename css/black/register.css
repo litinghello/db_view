@@ -1,0 +1,50 @@
+@charset "utf-8";
+
+html,body{
+    min-height: 100%;
+}
+body{
+    background: #333333;
+}
+.main{
+    width: 850px;
+}
+
+.item-icon{
+    color: #e0e0e0;
+    font-size: 50px;
+}
+.input-item{
+    margin: 10px 0;
+}
+.input-item span,.input-item input,.input-item select{
+    background: #444444;
+    border: none;
+    color: #eee;
+}
+.form-control[disabled="disabled"]{
+    background: #444444;
+}
+.btn-yes{
+    width:300px;
+    background: #00acee;
+    margin-top: 30px;
+}
+.btn-quit{
+    width:300px;
+    background: #ff7f26;
+    margin-top: 30px;
+}
+@media screen and (max-width: 900px){
+    .main{
+        width: 80%;
+    }
+}
+@media screen and (max-width: 400px){
+    .btn-yes{
+        width:100%;
+    }
+    .btn-quit{
+        width:100%;
+    }
+}
