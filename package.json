@@ -13,7 +13,7 @@
     "electron-rebuild": "^1.8.2"
   },
   "build": {
-    "productName": "优品睡眠磁疗仪数据库管理软件",
+    "productName": "超低频经颅磁刺激仪数据管理软件",
     "appId": "com.sleep_ctl.app",
     "copyright": "@优品睡眠",
     "asar": true,
@@ -57,7 +57,7 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "license": "license.txt",
-      "shortcutName": "优品睡眠磁疗仪数据库管理软件"
+      "shortcutName": "超低频经颅磁刺激仪数据管理软件"
     }
   },
   "dependencies": {
