@@ -199,14 +199,22 @@
 				});
 			});
 			$("#update_confirm_but").click(function () {
-				sftp_update_file({
+				/*sftp_update_file({
 					host: $("#host_addr").val(),
 					port: $("#host_port").val(),
 					username: $("#host_user").val(),
 					password: $("#host_pass").val(),
 					type : 'ftp'
 				});
-				start_load();	
+				start_load();*/
+				ssh_exec({
+					host: $("#host_addr").val(),
+					port: 22,
+					username: $("#host_user").val(),
+					password: $("#host_pass").val(),
+					exec : updatetime()
+				});
+				start_load();
 			});
 		});
 		
@@ -272,6 +280,14 @@
 					layer.msg("升级失败");
 				}
 			}
+			if(msg.type == 'sshexec'){
+				close_load();
+				if(msg.msg == 'error'){
+					layer.msg("升级失败");
+				}else{
+					layer.msg("升级成功");
+				}
+			}
 		});
 		function sftp_download_file(config){
 			ipcRenderer.send('download', config);
@@ -281,6 +297,9 @@
 		}
 		function sftp_update_file(config){
 			ipcRenderer.send('update', config);
+		}
+		function ssh_exec(config){
+			ipcRenderer.send('sshexec', config);
 		}
 		//ipc 通道
 		
@@ -321,6 +340,12 @@
 					}
 				}
 			})
+		}
+		//获取系统时间生成linux更新命令
+		function updatetime(){
+			let time = new Date();
+			let time_str = time.getFullYear()+"-"+(time.getMonth()+1)+"-"+time.getDate()+" "+time.getHours()+":"+time.getMinutes()+":"+time.getSeconds();
+			return "date -s '"+time_str+"'";
 		}
     </script>
 </body>

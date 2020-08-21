@@ -43,7 +43,12 @@ ipcMain.on('update', (event, arg) => {
 		event.reply('message', err);
 	});
 })
-
+ipcMain.on('sshexec', (event, arg) => {
+	//console.log(arg);
+	sshexec(arg,function(err){
+		event.reply('message', err);
+	});
+})
 function download(config,callback){
 	var EasyFtp = require('easy-ftp');
 	var ftp = new EasyFtp();
@@ -55,7 +60,7 @@ function download(config,callback){
 		});
 	});
 	ftp.on('close', function(){
-		callback({type:'download',msg:"close"});
+		//callback({type:'download',msg:"close"});
 	});
 	ftp.on('error', function(){
 		callback({type:'download',msg:"error"});
@@ -72,7 +77,7 @@ function upload(config,callback){
 		});
 	});
 	ftp.on('close', function(){
-		callback({type:'upload',msg:"close"});
+		//callback({type:'upload',msg:"close"});
 	});
 	ftp.on('error', function(){
 		callback({type:'upload',msg:"error"});
@@ -88,9 +93,30 @@ function update(config,callback){
 		});
 	});
 	ftp.on('close', function(){
-		callback({type:'update',msg:"close"});
+		//callback({type:'update',msg:"close"});
 	});
 	ftp.on('error', function(){
 		callback({type:'update',msg:"error"});
 	});
+}
+
+//远程执行命令
+function sshexec(config,callback){
+	var Client = require('ssh2').Client;
+	var conn = new Client();
+	conn.on('ready', function() {
+		console.log('Client :: ready');
+		conn.exec(config.exec, function(err, stream) {
+			if (err) throw err;
+			stream.on('close', function(code, signal) {
+				//console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
+				conn.end();
+			}).on('data', function(data) {
+				console.log('STDOUT: ' + data);
+				callback({type:'sshexec',msg:data});
+			}).stderr.on('data', function(data) {
+				callback({type:'sshexec',msg:"error"});
+			});
+		});
+	}).connect(config);	
 }
