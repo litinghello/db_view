@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>磁疗仪数据库管理软件v1.0.0</title>
+    <title>超低频经颅磁刺激仪数据管理软件v1.0.0</title>
     <link rel="stylesheet" type="text/css" href="../css/other/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../css/other/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="../css/other/datatables.min.css"/>
@@ -308,7 +308,7 @@
 		}
 		//
 		function scan_device_list_display(ip_addr) {
-			let links = "http://"+ip_addr+"";
+			let links = "http://"+ip_addr+":8000";
 			$.ajax({
 				timeout:500,
 				url: links,
