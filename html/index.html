@@ -100,7 +100,7 @@
                     buttons: ['excel']//,
                 }).off('click').on('click', 'tr', function () {
                     if(table_object.row( this ).data() !== undefined){
-                        click_event(table_object.row( this ).data());
+                        click_event(table_object.row(this));
                     }
                 });
                 $("#datalables_body input[type=search]").css({ width: "auto" });
@@ -124,17 +124,16 @@
 					"updatetime":"治疗时间"
                 };
                 user_database_read_information(db, function (len, data) {
-                    tables_init(table_row, data, function (data) {
-						console.log(data);
-                        /*layer.confirm(`对${data.user_name}资料进行操作?`,{icon: 3, title: '提示',btn: ['删除资料','载入资料','取消']
+                    tables_init(table_row, data, function (tr) {
+						console.log(tr);
+                        layer.confirm(`对<${tr.data().name}>资料进行操作?`,{icon: 3, title: '提示',btn: ['删除资料','取消']
                         ,btn1:function (index) {
                               layer.close(index);
-							  layer.msg("暂不支持!");
+							  //layer.msg("暂不支持!");
+							  tr.remove().draw();
                         },btn2:function (index) {
                               layer.close(index);
-                        },btn3:function (index) {
-                            layer.close(index);
-                        }});*/
+                        }});
                     });
                 });
             }
@@ -160,9 +159,19 @@
                 }
               });
             }
-
+			
+		function tables_update_sync(file){
+			let fs = require('fs');
+			try{
+				fs.readFileSync(file);
+				tables_update(file);
+			}catch(err){
+				console.log(err);
+			}
+		}
 		$(document).ready(function() {
 			//console.log($("#host_addr").val(),$("#host_port").val(),$("#host_user").val(),$("#host_pass").val());
+			tables_update_sync("temp.db");
 			$("#load_confirm_but").click(function () {
 				sftp_download_file({
 					host: $("#host_addr").val(),
@@ -227,7 +236,7 @@
 		}
 		
 		//数据库读取
-		var pwm_type=['γ-氨基丁酸','5-羟色胺','去甲肾上腺素','兴奋递质3','抑制递质13','谷氨酸','乙酰胆碱','多巴胺','兴奋递质6'];
+		var pwm_type=['无','γ-氨基丁酸','5-羟色胺','去甲肾上腺素','兴奋递质3','抑制递质13','谷氨酸','乙酰胆碱','多巴胺','兴奋递质6'];
 		function user_database_read_information(path,callback){
 			var fs = require('fs');
 			var filebuffer = fs.readFileSync(path);
@@ -237,11 +246,15 @@
 			  var data = new Array();
 			  while (stmt.step()){
 				let e = stmt.getAsObject();
+				e.age   = e.age;
+				e.gender=e.gender==0?'男':'女';
+				e.id	= "'"+e.id;
+				e.infor = e.infor;
+				e.name 	= e.name;
+				e.only = data.length;
 				e.type1 = pwm_type[e.type1];
 				e.type2 = pwm_type[e.type2];
-				e.type3 = pwm_type[e.type3];
-				e.gender=e.gender?'男':'女';
-				e.only= data.length;
+				e.type3 = pwm_type[e.type3];	
 				console.log(e);
 				data.push(e);
 			  }
