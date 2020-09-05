@@ -104,12 +104,14 @@ function update(config,callback){
 function sshexec(config,callback){
 	var Client = require('ssh2').Client;
 	var conn = new Client();
+	console.log(config.exec);
 	conn.on('ready', function() {
 		console.log('Client :: ready');
 		conn.exec(config.exec, function(err, stream) {
 			if (err) throw err;
 			stream.on('close', function(code, signal) {
-				//console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
+				console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
+				//callback({type:'sshexec',msg:signal});
 				conn.end();
 			}).on('data', function(data) {
 				console.log('STDOUT: ' + data);

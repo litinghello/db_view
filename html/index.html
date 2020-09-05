@@ -46,6 +46,7 @@
                 <div id="load_confirm_but" class="btn btn-primary">载入数据</div>
 				<div id="delete_confirm_but" class="btn btn-warning">删除数据</div>
 				<div id="update_confirm_but" class="btn btn-info">更新固件</div>
+				<!--div id="save_confirm_but" class="btn btn-danger" style="display: none;">存储时间</div-->
             </form>
         </div>
         <div><br></div>
@@ -225,6 +226,8 @@
 				});
 				start_load();
 			});
+			$("#save_confirm_but").click(function () {
+			});
 		});
 		
 		var load_index;
@@ -358,7 +361,7 @@
 		function updatetime(){
 			let time = new Date();
 			let time_str = time.getFullYear()+"-"+(time.getMonth()+1)+"-"+time.getDate()+" "+time.getHours()+":"+time.getMinutes()+":"+time.getSeconds();
-			return "date -s '"+time_str+"'";
+			return "date -s '"+time_str+"'"+" && hwclock -w";
 		}
     </script>
 </body>
