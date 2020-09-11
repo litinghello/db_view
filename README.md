@@ -1,3 +1,3 @@
-# music_control_app
+# view
 yarn dist
 控制软件
