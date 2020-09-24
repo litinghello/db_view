@@ -12,14 +12,24 @@
     <script type="text/javascript" src="../lib/layer/layer.js"></script>
     <script type="text/javascript" src="../lib/laydate/laydate.js"></script>
     <script type="text/javascript" src="../lib/datatables.min.js"></script>
+    <script type="text/javascript" src="../lib/pdfmake.min.js"></script>
+    <script type="text/javascript" src="../lib/vfs_fonts.js"></script>
+    <script type="text/javascript" src="../lib/filesaver.js"></script>
+    <script type="text/javascript" src="../lib/jquery.wordexport.js"></script>
 	
 	<script type="text/javascript" src="../js/sql-wasm.js"></script>
+	<script type="text/javascript" src="../js/user_init.js"></script>
+    <script type="text/javascript" src="../js/user_check.js"></script>
+    <script type="text/javascript" src="../js/user_storage.js"></script>
+    <script type="text/javascript" src="../js/user_crypto.js"></script>
+	<script type="text/javascript" src="../js/report_export.js"></script>
 </head>
 <body topmargin="0" oncontextmenu="return false" ondragstart="return false" onselectstart ="return false" oncopy="document.selection.empty()" onbeforecopy="return false">
        <div class="header">
         <div class="container">
             <div class="col-md-12 clearfix">
                 <div class="head-text pull-left"><i class="fa fa-cloud-download" aria-hidden="true"> 数据管理</i></div>
+				<div class="head-text exit pull-right btn-nav" onclick="user_cs_goto_view('setting.html');"><i class="fa fa-cog" aria-hidden="true"> 设置</i></div>
             </div>
         </div>
     </div>
@@ -59,6 +69,7 @@
                 </table>
             </div>
         </div>
+		<div id="export_file_style" style="display:none;"></div>
     <script type="text/javascript">
 			function tables_init(object,data,click_event) {
                 let info_object_columns = [];
@@ -94,14 +105,15 @@
                         // responsive: true,
                         // destroy: true
                     },
+					lengthMenu: [ 20, 1, 10, 20, 30, 40, 50 ],
                     paging: true,
                     pagingType: "full_numbers",//分页样式的类型
                     dom: 'Blfrtip',
                     // buttons: ['copy','csv','pdf','excel','pdfHtml5','print']//,
                     buttons: ['excel']//,
                 }).off('click').on('click', 'tr', function () {
-                    if(table_object.row( this ).data() !== undefined){
-                        click_event(table_object.row(this));
+                    if(table_object.row(this).data() !== undefined){
+                        click_event(table_object,table_object.row(this));
                     }
                 });
                 $("#datalables_body input[type=search]").css({ width: "auto" });
@@ -125,20 +137,53 @@
 					"updatetime":"治疗时间"
                 };
                 user_database_read_information(db, function (len, data) {
-                    tables_init(table_row, data, function (tr) {
-						console.log(tr);
-                        layer.confirm(`对<${tr.data().name}>资料进行操作?`,{icon: 3, title: '提示',btn: ['删除资料','取消']
+                    tables_init(table_row, data, function (tables,tr) {
+						//console.log(tr);
+                        layer.confirm(`对<${tr.data().name}>资料进行操作?`,{icon: 3, title: '提示',btn: ['导出word','删除资料','取消']
                         ,btn1:function (index) {
-                              layer.close(index);
-							  //layer.msg("暂不支持!");
-							  tr.remove().draw();
+							layer.close(index);
+							
+							let data={},sub_data={data_len:0};
+							data['user_id'] = tr.data().id.replace("'"," ");
+							data['user_name'] = tr.data().name;
+							data['user_gender'] = tr.data().gender;
+							data['user_age'] = tr.data().age;
+							data['user_remarks'] = tr.data().infor;
+							for(let i=0;i < tables.rows({filter:'applied'}).data().length;i++){
+								//console.log(tables.rows({filter:'applied'}).data()[i]);
+								sub_data[`data_id${i%20}`]=tables.rows({filter:'applied'}).data()[i].only;
+								sub_data[`data_parameter_1_${i%20}`]=tables.rows({filter:'applied'}).data()[i].type1;
+								sub_data[`data_time_1_${i%20}`]=tables.rows({filter:'applied'}).data()[i].time1;
+								sub_data[`data_parameter_2_${i%20}`]=tables.rows({filter:'applied'}).data()[i].type2;
+								sub_data[`data_time_2_${i%20}`]=tables.rows({filter:'applied'}).data()[i].time2;
+								sub_data[`data_parameter_3_${i%20}`]=tables.rows({filter:'applied'}).data()[i].type3;
+								sub_data[`data_time_3_${i%20}`]=tables.rows({filter:'applied'}).data()[i].time3;
+								sub_data[`data_time_total_${i%20}`]=parseInt(tables.rows({filter:'applied'}).data()[i].time1)
+																+parseInt(tables.rows({filter:'applied'}).data()[i].time2)
+																+parseInt(tables.rows({filter:'applied'}).data()[i].time3);
+								sub_data[`data_time_record_${i%20}`]=tables.rows({filter:'applied'}).data()[i].updatetime;
+								sub_data['data_len']++;
+								if((sub_data['data_len'] == 20) || (i == tables.rows({filter:'applied'}).data().length - 1)){
+									console.log("export:",sub_data['data_len']);
+									clean_export('#export_file_style');//清除数据
+									load_export_data('#export_file_style',Object.assign(data,sub_data));//加载数据
+									//console_export_data('#export_file_style');
+									word_export_template('#export_file_style',data['user_name']+"_第"+parseInt(i/20+1)+"页_共"+sub_data['data_len']+"组");//导出word
+									console.log(sub_data);
+									for(let k in sub_data) sub_data[k]="";
+									sub_data['data_len'] = 0;
+								}
+							}
                         },btn2:function (index) {
-                              layer.close(index);
+							layer.close(index);
+							//layer.msg("暂不支持!");
+							tr.remove().draw();
+                        },btn3:function (index) {
+							layer.close(index);
                         }});
                     });
                 });
             }
-			// report_export("print",tag,model,data);
             //导出文件
             function export_user_infor(db){
               user_database_read_information(db, function (len, data) {
@@ -170,9 +215,11 @@
 				console.log(err);
 			}
 		}
+		
 		$(document).ready(function() {
-			//console.log($("#host_addr").val(),$("#host_port").val(),$("#host_user").val(),$("#host_pass").val());
-			tables_update_sync("temp.db");
+			console.log(user_init_load_config());
+			load_export_template('#export_file_style');//加载需要导出的文件到标签中
+			tables_update_sync("temp.db");//同步数据
 			$("#load_confirm_but").click(function () {
 				sftp_download_file({
 					host: $("#host_addr").val(),
@@ -255,9 +302,9 @@
 				e.infor = e.infor;
 				e.name 	= e.name;
 				e.only = data.length;
-				e.type1 = pwm_type[e.type1];
-				e.type2 = pwm_type[e.type2];
-				e.type3 = pwm_type[e.type3];	
+				e.type1 = pwm_type[e.type1>=pwm_type.length?0:e.type1];
+				e.type2 = pwm_type[e.type2>=pwm_type.length?0:e.type2];
+				e.type3 = pwm_type[e.type3>=pwm_type.length?0:e.type3];
 				console.log(e);
 				data.push(e);
 			  }

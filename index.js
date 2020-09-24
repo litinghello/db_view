@@ -6,13 +6,10 @@ app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');//�
 
 app.on('ready',function(){//当 Electron 完成初始化时被触发。
     const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
-    let window = new BrowserWindow({width:width,height:height,minWidth:width/4,minHeight:height/4,fullscreen:false,resizable:false,autoHideMenuBar: true,useContentSize :true,webPreferences:{nodeIntegration: true}});
-    //let window = new BrowserWindow({width:width,height:height,minWidth:width/4,minHeight:height/4,fullscreen:false,autoHideMenuBar:true,useContentSize:true,webPreferences:{devTools:true,nodeIntegration:true,nodeIntegrationInWorker:true}});
+    let window = new BrowserWindow({width:width,height:height,minWidth:width/4,minHeight:height/4,fullscreen:false,autoHideMenuBar:true,useContentSize:true,webPreferences:{devTools:true,nodeIntegration:true,nodeIntegrationInWorker:true}});
     // window.loadURL(`file://${__dirname}/html/index.html`);
     window.loadFile("./html/index.html");
     //window.openDevTools();//开启调试工具
-	//window.webContents.openDevTools();
-	window.setMenuBarVisibility(false);
 	window.setMenu(null);
     window.on('closed',()=>{
         window = null;

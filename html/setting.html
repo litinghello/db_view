@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>设置</title>
+    <link rel="stylesheet" type="text/css" href="../css/other/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/other/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/black/laydiy.css">
+    <link rel="stylesheet" type="text/css" href="../css/black/setting.css">
+    <link rel="stylesheet" type="text/css" href="../css/black/common.css">
+
+    <script type="text/javascript" src="../lib/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../lib/layer/layer.js"></script>
+    <script type="text/javascript" src="../lib/laydate/laydate.js"></script>
+
+    <script type="text/javascript" src="../js/user_init.js"></script>
+    <script type="text/javascript" src="../js/user_check.js"></script>
+    <script type="text/javascript" src="../js/user_storage.js"></script>
+    <script type="text/javascript" src="../js/user_crypto.js"></script>
+</head>
+<body topmargin="0" oncontextmenu="return false" ondragstart="return false" onselectstart ="return false" oncopy="document.selection.empty()" onbeforecopy="return false" >
+<div class="header">
+    <div class="container">
+        <div class="col-md-12 clearfix">
+            <div class="head-text pull-left"><i class="fa fa-cog" aria-hidden="true"> 设置</i></div>
+            <div class="head-text exit pull-right btn-nav" onclick="user_cs_goto_view('index.html');"><i class="fa fa-sign-out" aria-hidden="true"> 退出</i></div>
+        </div>
+    </div>
+</div>
+<div class="container main">
+    <div class="col-xs-2 h-100">
+        <div class="left-box">
+            <div class="left-item active">常用设置</div>
+        </div>
+    </div>
+    <div class="col-xs-10">
+        <div class="dir-setting row">
+            <div class="form-horizontal">
+                <div class="form-item">
+                    <div class="form-group" hidden>
+                        <label for="db_dir" class="col-sm-3 control-label">数据库位置</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control data-struct" id="db_dir" placeholder="">
+                        </div>
+                        <div class="col-sm-2">
+                            <span id="sl_db_dir" class="btn btn-default">选择</span>
+                        </div>
+                    </div>
+                    <div class="form-group" hidden>
+                        <label for="set_control_exe_path" class="col-sm-3 control-label">助眠系统</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control data-struct" id="set_control_exe_path" placeholder="选择已安装的助眠系统">
+                        </div>
+                        <div class="col-sm-2">
+                            <span id="set_control_exe_path_but" class="btn btn-default">选 择</span>
+                        </div>
+                    </div>
+                    <div class="form-group" hidden>
+                        <label for="set_reservation_url" class="col-sm-3 control-label">预约地址</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control data-struct" id="set_reservation_url" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="set_hospital_name" class="col-sm-3 control-label">医院名称</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control data-struct" id="set_hospital_name" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="set_department_name" class="col-sm-3 control-label">科室名称</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control data-struct" id="set_department_name" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="set_principal_name" class="col-sm-3 control-label">负责人名</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control data-struct" id="set_principal_name" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group" hidden>
+                        <label for="set_auth_time" class="col-sm-3 control-label">授权时间</label>
+                        <div class="col-sm-7" >
+                            <input type="text" disabled="disabled" class="form-control text-center" id="set_auth_time" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <label for="set_model_path" class="col-sm-3 control-label">模板文件</label>
+                        <div class="col-sm-7" >
+                            <input type="text" class="form-control text-center" id="set_model_path" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group" hidden>
+                        <label for="set_auth_time" class="col-sm-3 control-label">数据目录</label>
+                        <div class="col-sm-7" >
+                            <input type="text" disabled="disabled" class="form-control text-center" id="set_userdata_path" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group" hidden>
+                        <label class="col-sm-3 control-label">重新授权</label>
+                        <div class="col-sm-7">
+                            <span id="set_destroy_auth" class="btn btn-danger btn-block"> 注 销 </span>
+                        </div>
+                    </div>
+                    <div class="form-group text-center" hidden>
+                        <div class="col-sm-3 control-label"></div>
+                        <div class="col-sm-7">
+                            <span id="set_change_password_but" class="btn btn-info center-block"> 修改密码 </span>
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                        <div class="col-sm-3 control-label"></div>
+                        <div class="col-sm-7">
+                            <span id="set_save_but" class="btn btn-success center-block"> 保 存 </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#set_control_exe_path").val(user_init_load_config().set_control_exe_path);
+        $("#set_reservation_url").val(user_init_load_config().set_reservation_url);
+        $("#set_hospital_name").val(user_init_load_config().set_hospital_name);
+        $("#set_department_name").val(user_init_load_config().set_department_name);
+        $("#set_principal_name").val(user_init_load_config().set_principal_name);
+        $("#set_auth_time").val(user_get_auth_time()+"分钟");
+        update_soft_model_path("#set_model_path");
+        update_soft_userdata_path("#set_userdata_path");
+
+        $("#set_save_but").click(function () {
+            user_set_default_set({
+                "set_control_exe_path":$("#set_control_exe_path").val(),
+                "set_reservation_url":$("#set_reservation_url").val(),
+                "set_hospital_name":$("#set_hospital_name").val(),
+                "set_department_name":$("#set_department_name").val(),
+                "set_principal_name":$("#set_principal_name").val(),
+                "set_export_model_path":$("#set_model_path").val()
+            });
+            layer.msg("保存成功");
+        });
+        $("#set_destroy_auth").click(function () {
+            layer.confirm('注销系统，系统授权信息将清除。以及退出系统。',function (index) {
+                layer.close(index);
+                user_system_confirm_password(function () {
+                    user_set_auth_time(0);
+                    user_cs_close_view();//关闭页面
+                });
+            });
+        });
+        $("#set_change_password_but").click(function () {
+          user_system_confirm_password(function () {
+            layer.confirm("验证成功！接下来请输入两次新的密码！",function(index){
+              layer.close(index);
+              user_system_set_password(function (password) {
+                  user_cs_file_update(user_ac_get_roaming_path(user_init_load_config().user_uuid),{
+                      "user_pass":password,
+                    });
+                    user_cs_goto_view('login.html');//跳转授权页面
+                  });
+            });
+          });
+        });
+        $("#set_control_exe_path_but").click(function () {
+            const {dialog} = require('electron').remote;
+            let file_path = dialog.showOpenDialogSync({title:"选择可执行文件",properties: ['openFile'],filters: [{ name: 'exe', extensions: ['exe']}] });
+            if(file_path !== undefined){
+              $("#set_control_exe_path").val(file_path[0]);
+            }
+        });
+    });
+    function update_soft_model_path(tag){
+      $(tag).val(user_init_load_config().set_export_model_path);
+      $(tag).on('click', function () {
+        const {dialog} = require('electron').remote;
+        let file_path = dialog.showOpenDialogSync({title:"选择模板",properties: ['openFile'],filters: [{ name: 'HTML', extensions: ['html'] }]});
+        if(file_path !== undefined){
+          $(tag).val(file_path[0]);
+        }else{
+          $(tag).val("./export/export.html");
+        }
+      });
+    }
+    //更新用户数据目录的数据
+    function update_soft_userdata_path(tag){
+      const afs = require("fs");
+      let config_path = user_init_load_config().execute_path+"\\soft_config";
+      if(afs.existsSync(config_path)){
+          $(tag).val(JSON.parse(afs.readFileSync(config_path)).userData);
+          // return JSON.parse(crypto_aes_decryption("12:34:56:78:9a:bc",cs_fs.readFileSync(path,encoding)));
+      }
+      $(tag).on('click', function () {
+        const {dialog,app} = require('electron').remote;
+        let newpath = dialog.showOpenDialogSync({properties: ['openDirectory'],defaultPath:$(tag).val()});
+        if(newpath != undefined){
+          newpath += "\\userData";//添加
+          $(tag).val(newpath[0]);
+          layer.confirm(`新路径${newpath[0]},需要重启生效,是否需要重启！`, {
+            btn: ['重启软件','取消设置'], //按钮
+            btn1:function (index) {
+              const afs = require("fs");
+              let conf = {userData:newpath,machine_id:user_init_load_config().machine_id};
+              afs.writeFileSync(user_init_load_config().execute_path+"\\soft_config",JSON.stringify(conf));//写入配置信息
+              // user_cs_file_update(user_init_load_config().execute_path+"\\soft_config",{userData:newpath});
+              layer.close(index);
+              app.relaunch();
+              app.exit(0);
+            },
+            btn2:function (index) {
+                layer.close(index);
+            },cancel:function () {
+                return false;
+            }
+          })
+        }
+      })
+    }
+</script>
+</body>
+</html>
