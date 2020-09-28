@@ -105,7 +105,7 @@
                         // responsive: true,
                         // destroy: true
                     },
-					lengthMenu: [ 20, 1, 10, 20, 30, 40, 50 ],
+					lengthMenu: [ 15, 1, 10, 20, 30, 40, 50 ],
                     paging: true,
                     pagingType: "full_numbers",//分页样式的类型
                     dom: 'Blfrtip',
@@ -143,7 +143,7 @@
                         ,btn1:function (index) {
 							layer.close(index);
 							
-							let data={},sub_data={data_len:0};
+							let data={},sub_data={data_len:0},export_count=15;
 							data['user_id'] = tr.data().id.replace("'"," ");
 							data['user_name'] = tr.data().name;
 							data['user_gender'] = tr.data().gender;
@@ -151,24 +151,24 @@
 							data['user_remarks'] = tr.data().infor;
 							for(let i=0;i < tables.rows({filter:'applied'}).data().length;i++){
 								//console.log(tables.rows({filter:'applied'}).data()[i]);
-								sub_data[`data_id${i%20}`]=tables.rows({filter:'applied'}).data()[i].only;
-								sub_data[`data_parameter_1_${i%20}`]=tables.rows({filter:'applied'}).data()[i].type1;
-								sub_data[`data_time_1_${i%20}`]=tables.rows({filter:'applied'}).data()[i].time1;
-								sub_data[`data_parameter_2_${i%20}`]=tables.rows({filter:'applied'}).data()[i].type2;
-								sub_data[`data_time_2_${i%20}`]=tables.rows({filter:'applied'}).data()[i].time2;
-								sub_data[`data_parameter_3_${i%20}`]=tables.rows({filter:'applied'}).data()[i].type3;
-								sub_data[`data_time_3_${i%20}`]=tables.rows({filter:'applied'}).data()[i].time3;
-								sub_data[`data_time_total_${i%20}`]=parseInt(tables.rows({filter:'applied'}).data()[i].time1)
+								sub_data[`data_id${i%export_count}`]=tables.rows({filter:'applied'}).data()[i].only;
+								sub_data[`data_parameter_1_${i%export_count}`]=tables.rows({filter:'applied'}).data()[i].type1;
+								sub_data[`data_time_1_${i%export_count}`]=tables.rows({filter:'applied'}).data()[i].time1;
+								sub_data[`data_parameter_2_${i%export_count}`]=tables.rows({filter:'applied'}).data()[i].type2;
+								sub_data[`data_time_2_${i%export_count}`]=tables.rows({filter:'applied'}).data()[i].time2;
+								sub_data[`data_parameter_3_${i%export_count}`]=tables.rows({filter:'applied'}).data()[i].type3;
+								sub_data[`data_time_3_${i%export_count}`]=tables.rows({filter:'applied'}).data()[i].time3;
+								sub_data[`data_time_total_${i%export_count}`]=parseInt(tables.rows({filter:'applied'}).data()[i].time1)
 																+parseInt(tables.rows({filter:'applied'}).data()[i].time2)
 																+parseInt(tables.rows({filter:'applied'}).data()[i].time3);
-								sub_data[`data_time_record_${i%20}`]=tables.rows({filter:'applied'}).data()[i].updatetime;
+								sub_data[`data_time_record_${i%export_count}`]=tables.rows({filter:'applied'}).data()[i].updatetime;
 								sub_data['data_len']++;
-								if((sub_data['data_len'] == 20) || (i == tables.rows({filter:'applied'}).data().length - 1)){
+								if((sub_data['data_len'] == export_count) || (i == tables.rows({filter:'applied'}).data().length - 1)){
 									console.log("export:",sub_data['data_len']);
 									clean_export('#export_file_style');//清除数据
 									load_export_data('#export_file_style',Object.assign(data,sub_data));//加载数据
 									//console_export_data('#export_file_style');
-									word_export_template('#export_file_style',data['user_name']+"_第"+parseInt(i/20+1)+"页_共"+sub_data['data_len']+"组");//导出word
+									word_export_template('#export_file_style',data['user_name']+"_第"+parseInt(i/export_count+1)+"页_共"+sub_data['data_len']+"组");//导出word
 									console.log(sub_data);
 									for(let k in sub_data) sub_data[k]="";
 									sub_data['data_len'] = 0;
